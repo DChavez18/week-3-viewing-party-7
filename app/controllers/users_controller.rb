@@ -24,6 +24,21 @@ class UsersController <ApplicationController
     end
   end
 
+  def login_form
+
+  end
+
+  def login
+    user = User.find_by(email: params[:email])
+    if user.authenticate(params[:password])
+      flash[:success] = "Welcome!"
+      redirect_to user_path(user)
+    else
+      flash[:error] = "Sorry, your credentials are bad."
+      render :login_form
+    end
+  end
+
   private 
 
   def user_params 
