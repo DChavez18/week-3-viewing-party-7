@@ -1,6 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "User Registration" do
+  it "has a form to fill in name, email, password and password confirmation" do
+    visit register_path
+
+    expect(page).to have_field(:user_name)
+    expect(page).to have_field(:user_email)
+    expect(page).to have_field(:user_password)
+    expect(page).to have_field(:user_password_confirmation)
+  end
+
   it 'can create a user with a name and unique email' do
     visit register_path
 
@@ -29,5 +38,19 @@ RSpec.describe "User Registration" do
 
     expect(current_path).to eq(register_path)
     expect(page).to have_content("Email has already been taken")
+  end
+
+  it "returns to register page if passwords do not match" do
+    visit register_path
+    
+    fill_in :user_name, with: 'User Two'
+    fill_in :user_email, with:'notunique@example.com'
+    fill_in :user_password, with: "hello"
+    fill_in :user_password_confirmation, with: 'password123'
+    
+    click_button 'Create New User'
+
+    expect(current_path).to eq(register_path)
+    expect(page).to have_content("Password and Password Confirmation do not match.")
   end
 end

@@ -16,7 +16,7 @@ class UsersController <ApplicationController
       flash[:error] = "Email has already been taken"
       redirect_to register_path
     elsif params[:user][:password] != params[:user][:password_confirmation]
-      flash[:error] = "Password and Password Confirmation does not match."
+      flash[:error] = "Password and Password Confirmation do not match."
       redirect_to register_path
     else
       flash[:error] = "You must fill in all fields."
