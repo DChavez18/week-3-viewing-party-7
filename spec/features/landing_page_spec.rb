@@ -53,7 +53,7 @@ RSpec.describe 'Landing Page' do
 
     click_button "Log In"
 
-    expect(current_path).to eq("/users/#{@user1.id}")
+    expect(current_path).to eq(user_path(@user1.id))
     expect(page).to have_content("Welcome!")
   end
 
