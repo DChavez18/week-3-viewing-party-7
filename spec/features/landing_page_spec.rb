@@ -50,10 +50,23 @@ RSpec.describe 'Landing Page' do
 
     fill_in :email, with: "user1@test.com"
     fill_in :password, with: "password123"
-    
+
     click_button "Log In"
 
     expect(current_path).to eq("/users/#{@user1.id}")
+    expect(page).to have_content("Welcome!")
+  end
 
+  it "does not log in the user if the credential requirements are not met" do
+    visit '/'
+    click_on "Log In"
+
+    fill_in :email, with: "what!"
+    fill_in :password, with: "password123"
+
+    click_button "Log In"
+
+    expect(current_path).to eq(login_path)
+    expect(page).to have_content("Sorry, your credentials are bad.")
   end
 end
