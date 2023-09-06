@@ -1,10 +1,16 @@
 class UsersController <ApplicationController 
+  # before_action :require_login, only: [:show]
   def new 
     @user = User.new()
   end 
 
   def show 
-    @user = User.find(params[:id])
+    if current_user
+      @user = User.find(current_user.id)
+    else
+      flash[:error] = "You MUST be logged in or registered to access!"
+      redirect_to root_path
+    end
   end 
 
   def create
@@ -49,5 +55,12 @@ class UsersController <ApplicationController
 
   def user_params 
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
-  end 
+  end
+
+  # def require_login
+  #   unless current_user
+  #     flash[:error] = "You MUST be logged in or registered to access!"
+  #     redirect_to root_path
+  #   end
+  # end
 end 
