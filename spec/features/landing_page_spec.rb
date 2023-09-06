@@ -22,17 +22,18 @@ RSpec.describe 'Landing Page' do
     expect(current_path).to eq(root_path)
   end 
 
-  it 'lists out existing users' do 
-    user1 = User.create(name: "User One", email: "user1@test.com")
-    user2 = User.create(name: "User Two", email: "user2@test.com")
+  # it 'lists out existing users' do 
+  #   user1 = User.create(name: "User One", email: "user1@test.com")
+  #   user2 = User.create(name: "User Two", email: "user2@test.com")
 
-    expect(page).to have_content('Existing Users:')
+  #   expect(page).to have_content('Existing Users:')
 
-    within('.existing-users') do 
-      expect(page).to have_content(user1.email)
-      expect(page).to have_content(user2.email)
-    end     
-  end
+  #   within('.existing-users') do 
+  #     expect(page).to have_content(user1.email)
+  #     expect(page).to have_content(user2.email)
+  #   end     
+  # end
+  # no longer compatible with current user stories
   
   it "has a link for Log In thats takes user to login form" do
     visit '/'
@@ -102,5 +103,23 @@ RSpec.describe 'Landing Page' do
     expect(current_path).to eq('/')
     expect(page).to have_link("Log In")
     expect(page).to have_button("Create New User")
+  end
+
+  it "the lists of existing users in no longer a link to their show page but just a list of email addresses" do
+    visit '/'
+    click_on "Log In"
+
+    fill_in :email, with: "user1@test.com"
+    fill_in :password, with: "password123"
+
+    click_button "Log In"
+
+    visit '/'
+
+    expect(page).to have_content("Existing Users:")
+    expect(page).to_not have_link(@user1.email)
+    expect(page).to_not have_link(@user2.email)
+    expect(page).to have_content(@user1.email)
+    expect(page).to have_content(@user2.email)
   end
 end
