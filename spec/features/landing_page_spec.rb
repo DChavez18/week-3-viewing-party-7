@@ -69,4 +69,38 @@ RSpec.describe 'Landing Page' do
     expect(current_path).to eq(login_path)
     expect(page).to have_content("Sorry, your credentials are bad.")
   end
+
+  it "displays a link to log out as a logged in user, and no longer shows a link to log in or create and account" do
+    visit '/'
+    click_on "Log In"
+
+    fill_in :email, with: "user1@test.com"
+    fill_in :password, with: "password123"
+
+    click_button "Log In"
+
+    visit '/'
+
+    expect(page).to_not have_link("Log In")
+    expect(page).to_not have_button("Create New User")
+    expect(page).to have_link("Log Out")
+  end
+
+  it "reverts back to having a log in link if the user logs out and sends user back to landing page" do
+    visit '/'
+    click_on "Log In"
+
+    fill_in :email, with: "user1@test.com"
+    fill_in :password, with: "password123"
+
+    click_button "Log In"
+
+    visit '/'
+
+    click_link "Log Out"
+
+    expect(current_path).to eq('/')
+    expect(page).to have_link("Log In")
+    expect(page).to have_button("Create New User")
+  end
 end

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   get '/login', to: "users#login_form"
   post '/login', to: "users#login"
+  get '/logout', to: "users#logout"
   get '/register', to: 'users#new'
   post '/users', to: 'users#create'
   get '/users/:id/movies', to: 'movies#index', as: 'movies'

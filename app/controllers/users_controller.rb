@@ -10,7 +10,7 @@ class UsersController <ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      # session[:user_id] = @user.id
+      session[:user_id] = @user.id
       redirect_to user_path(@user)
     elsif User.exists?(email: params[:user][:email])
       flash[:error] = "Email has already been taken"
@@ -31,13 +31,18 @@ class UsersController <ApplicationController
   def login
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
-      # session[:user_id] = user.id
+      session[:user_id] = user.id
       flash[:success] = "Welcome!"
       redirect_to user_path(user)
     else
       flash[:error] = "Sorry, your credentials are bad."
       render :login_form
     end
+  end
+
+  def logout
+    session[:user_id] = nil
+    redirect_to root_path
   end
 
   private 
