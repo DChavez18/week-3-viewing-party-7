@@ -3,7 +3,6 @@ class ViewingPartyController < ApplicationController
 
   def new
     @movie = Movie.find(params[:movie_id])
-    require 'pry'; binding.pry
   end
 
   private
